@@ -7,7 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		059AC05421A62F0B009DE692 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 059AC05321A62F0B009DE692 /* main.c */; };
+		059AC06521A630A2009DE692 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 059AC05C21A630A0009DE692 /* main.c */; };
+		059AC06621A630A2009DE692 /* Tuple.c in Sources */ = {isa = PBXBuildFile; fileRef = 059AC05D21A630A0009DE692 /* Tuple.c */; };
+		059AC06721A630A2009DE692 /* LinkedList.c in Sources */ = {isa = PBXBuildFile; fileRef = 059AC05F21A630A1009DE692 /* LinkedList.c */; };
+		059AC06821A630A2009DE692 /* BST Tree.c in Sources */ = {isa = PBXBuildFile; fileRef = 059AC06021A630A1009DE692 /* BST Tree.c */; };
+		059AC06921A630A2009DE692 /* ArrayList.c in Sources */ = {isa = PBXBuildFile; fileRef = 059AC06221A630A1009DE692 /* ArrayList.c */; };
+		059AC06A21A630A2009DE692 /* Relation.c in Sources */ = {isa = PBXBuildFile; fileRef = 059AC06321A630A2009DE692 /* Relation.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,7 +29,17 @@
 
 /* Begin PBXFileReference section */
 		059AC05021A62F0B009DE692 /* CSC173PJT4 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CSC173PJT4; sourceTree = BUILT_PRODUCTS_DIR; };
-		059AC05321A62F0B009DE692 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		059AC05A21A630A0009DE692 /* Relation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Relation.h; sourceTree = "<group>"; };
+		059AC05B21A630A0009DE692 /* LinkedList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinkedList.h; sourceTree = "<group>"; };
+		059AC05C21A630A0009DE692 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main.c; path = "../../../Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/e6b6b12dd5fe462ef6ee8171d2263ad4/Message/MessageTemp/07e02af62470502ce620c7edc431e04e/File/Project4 Database_1/main.c"; sourceTree = "<group>"; };
+		059AC05D21A630A0009DE692 /* Tuple.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Tuple.c; sourceTree = "<group>"; };
+		059AC05E21A630A1009DE692 /* Tuple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tuple.h; sourceTree = "<group>"; };
+		059AC05F21A630A1009DE692 /* LinkedList.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = LinkedList.c; sourceTree = "<group>"; };
+		059AC06021A630A1009DE692 /* BST Tree.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "BST Tree.c"; sourceTree = "<group>"; };
+		059AC06121A630A1009DE692 /* BST Tree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BST Tree.h"; sourceTree = "<group>"; };
+		059AC06221A630A1009DE692 /* ArrayList.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ArrayList.c; sourceTree = "<group>"; };
+		059AC06321A630A2009DE692 /* Relation.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Relation.c; sourceTree = "<group>"; };
+		059AC06421A630A2009DE692 /* ArrayList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArrayList.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +72,17 @@
 		059AC05221A62F0B009DE692 /* CSC173PJT4 */ = {
 			isa = PBXGroup;
 			children = (
-				059AC05321A62F0B009DE692 /* main.c */,
+				059AC06221A630A1009DE692 /* ArrayList.c */,
+				059AC06421A630A2009DE692 /* ArrayList.h */,
+				059AC06021A630A1009DE692 /* BST Tree.c */,
+				059AC06121A630A1009DE692 /* BST Tree.h */,
+				059AC05F21A630A1009DE692 /* LinkedList.c */,
+				059AC05B21A630A0009DE692 /* LinkedList.h */,
+				059AC05C21A630A0009DE692 /* main.c */,
+				059AC06321A630A2009DE692 /* Relation.c */,
+				059AC05A21A630A0009DE692 /* Relation.h */,
+				059AC05D21A630A0009DE692 /* Tuple.c */,
+				059AC05E21A630A1009DE692 /* Tuple.h */,
 			);
 			path = CSC173PJT4;
 			sourceTree = "<group>";
@@ -118,7 +143,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				059AC05421A62F0B009DE692 /* main.c in Sources */,
+				059AC06A21A630A2009DE692 /* Relation.c in Sources */,
+				059AC06721A630A2009DE692 /* LinkedList.c in Sources */,
+				059AC06621A630A2009DE692 /* Tuple.c in Sources */,
+				059AC06521A630A2009DE692 /* main.c in Sources */,
+				059AC06921A630A2009DE692 /* ArrayList.c in Sources */,
+				059AC06821A630A2009DE692 /* BST Tree.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -162,7 +192,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -170,8 +200,13 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_PEDANTIC = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
@@ -220,10 +255,15 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_PEDANTIC = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
