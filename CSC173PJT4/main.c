@@ -13,25 +13,24 @@
 int main(int argc, const char * argv[]) {
     // insert code here...
     Tuple t = new_Tuple();
-    Tuple_add_el("CSC", t);
-    Tuple_add_el("LZD", t);
-    Tuple_add_el("D+", t);
+    Tuple_add_el("CS101", t);
+    Tuple_add_el("12345", t);
+    Tuple_add_el("A", t);
 
     Tuple t2 = new_Tuple();
-    Tuple_add_el("ECO", t2);
-    Tuple_add_el("ZYX", t2);
-    Tuple_add_el("A+", t2);
+    Tuple_add_el("CS101", t2);
+    Tuple_add_el("67890", t2);
+    Tuple_add_el("B", t2);
 
     Tuple t3 = new_Tuple();
-    Tuple_add_el("AME", t3);
-    Tuple_add_el("FSY", t3);
+    Tuple_add_el("EE200", t3);
+    Tuple_add_el("12345", t3);
     Tuple_add_el("C", t3);
-    Tuple_remove_el(1, t3);
 
     Tuple t4 = new_Tuple();
-    Tuple_add_el("DMS", t4);
-    Tuple_add_el("QYR", t4);
-    Tuple_add_el("A", t4);
+    Tuple_add_el("EE200", t4);
+    Tuple_add_el("22222", t4);
+    Tuple_add_el("B+", t4);
     
     
 //    int keynum = 1;
@@ -66,21 +65,13 @@ int main(int argc, const char * argv[]) {
     Relation_insert(t2, CSG);
     Relation_insert(t3, CSG);
     Relation_insert(t4, CSG);
-
-    LinkedList *ls = LinkedList_new();
-    LinkedList_add_at_end(ls, t);
-    LinkedList_add_at_end(ls, t3);
-    LinkedList_add_at_end(ls, t2);
-    LinkedList_add_at_end(ls, t4);
     
-    LinkedListIterator it = *LinkedList_iterator(ls);
     
-    while(LinkedListIterator_has_next(&it)){
-        if(LinkedListIterator_next(&it)==t2){
-            print_Tupple(t2);
-        }
-    }
-
+    print_Relation(CSG);
+    print_Relation(Relation_lookup(t, CSG));
+    
+Relation_delete(t, CSG);
+    print_Relation(CSG);
     //LinkedList *found = Relation_lookup(t4, CSG);
     return 0;
 }

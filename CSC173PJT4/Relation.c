@@ -87,14 +87,19 @@ void Relation_append_attr(char* new_schema, ArrayList new_els,  Relation this){
     //No need to care about the hash table and trees cuz they are just pointers
 }
 
-LinkedList* Relation_lookup(Tuple quest, Relation this){
+Relation Relation_lookup(Tuple quest, Relation this){
     LinkedList *valid_tuples = LinkedList_new();
     if(quest->num != this->n_attr){
         printf("Invalid Quest");
         return NULL;
     }
+    
+    
+    
+    
     for (int i=0; i < quest->num; i++){
         if(i == this->key){
+            //如果带*号 是不能hash的！ 必须在这里判断一下！
             int hash_to = Relation_hash_fun(*quest->array[i]);
             LinkedListIterator it = *LinkedList_iterator(this->hashT[hash_to]);
             while(LinkedListIterator_has_next(&it)){
@@ -105,13 +110,13 @@ LinkedList* Relation_lookup(Tuple quest, Relation this){
                 }
             }
             if (!LinkedListIterator_has_next(&it)){
-                printf("Item not found\n");
+                printf("1Item not found\n");
                 return NULL;
             }
         }else {
             Tuple temp = BST_find(quest->array[i], this->secTrees[i]);
             if(temp == NULL){
-                printf("Item not found\n");
+                printf("2Item not found\n");
                 return NULL;
             } else {
                 if(Compare_tuples(temp, quest)){
@@ -121,7 +126,14 @@ LinkedList* Relation_lookup(Tuple quest, Relation this){
             }
         }
     }
-    return valid_tuples;
+    Relation output=new_Relation();
+    Relation_set_KeySchema(this->key, this->schema, output);
+    LinkedListIterator it = *LinkedList_iterator(valid_tuples);
+    while(LinkedListIterator_has_next(&it)){
+        Tuple temp = LinkedListIterator_next(&it);
+        Relation_insert(temp, output);
+    }
+    return output;
 }
 
 
@@ -161,5 +173,12 @@ void Relation_delete(Tuple quest, Relation this){
                 }
             }
         }
+    }
+}
+
+void print_Relation(Relation R){
+    print_Tupple(R->schema);
+    for(int i=0; i<=R->all_Tuples->cur; i++){
+        print_Tupple(R->all_Tuples->array[i]);
     }
 }

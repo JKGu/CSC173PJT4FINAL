@@ -52,8 +52,10 @@ void Tuple_remove_el(int index, Tuple this){
 //}
 
 void print_Tupple (Tuple this) {
+    if(this==NULL)return;
     for(int i=0; i<this->num; i++){
-        printf("%s\n", this->array[i]);
+        printf("%s\t", this->array[i]);
     }
+    printf("\n");
 }
 
