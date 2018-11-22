@@ -56,4 +56,4 @@ void print_Tupple (Tuple this) {
         printf("%s\n", this->array[i]);
     }
 }
-lklk
+
