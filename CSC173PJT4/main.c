@@ -81,6 +81,6 @@ int main(int argc, const char * argv[]) {
         }
     }
 
-    LinkedList *found = Relation_lookup(t4, CSG);
+    //LinkedList *found = Relation_lookup(t4, CSG);
     return 0;
 }

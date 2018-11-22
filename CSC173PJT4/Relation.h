@@ -33,3 +33,5 @@ void Relation_append_attr(char* new_schema, ArrayList new_els,  Relation this);
 LinkedList* Relation_lookup(Tuple quest, Relation this);
 
 bool Compare_tuples (Tuple t1, Tuple t2);
+
+void Relation_delete(Tuple quest, Relation this);

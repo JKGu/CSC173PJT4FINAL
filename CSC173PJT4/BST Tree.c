@@ -21,6 +21,7 @@ struct Node {
     char* attr_el;
     Node lc;
     Node rc;
+    Node p;
 };
 
 Node new_Node(void* data, char* key){
@@ -29,6 +30,7 @@ Node new_Node(void* data, char* key){
     this->attr_el = key;
     this->lc = NULL;
     this->rc = NULL;
+    this->p=NULL;
     return this;
 }
 
@@ -51,12 +53,12 @@ void BST_add_child(void* data, Tree this, char* key){
 void BST_insert_help(Node this, Node new){
     if(new->attr_el > this->attr_el){
         if(this->rc == NULL)
-            this->rc = new;
+        {this->rc = new; new->p=this;}
         else
             BST_insert_help(this->rc, new);
     }if(new->attr_el <= this->attr_el){
         if(this->lc == NULL)
-            this->lc = new;
+        {this->lc = new;new->p=this;}
         else
             BST_insert_help(this->lc, new);
     }else{
@@ -78,3 +80,34 @@ void* BST_find_help(char* key, Node this){
     return NULL;
 }
 
+void BST_delete(void*data, Tree this, char* key){
+    BST_delete_help(data, this->root, key);
+}
+
+char* BSTminValue(Node node){
+    char* min = node->attr_el;
+    while (node->lc != NULL)
+    {
+        min = node->lc->attr_el;
+        node=node->lc;
+    }
+    return min;
+}
+
+Node BST_delete_help(void* data, Node this, char* key){
+    if(this==NULL) return this;
+    if (key < this->attr_el)
+        this->lc = BST_delete_help(data, this->lc, key);
+    else if (key > this->attr_el)
+        this->rc = BST_delete_help(data, this->rc, key);
+    else
+    {
+        if (this->lc == NULL)
+            return this->rc;
+        else if (this->rc==NULL)
+            return this->lc;
+        this->attr_el = BSTminValue(this->rc);
+        this->rc=BST_delete_help(data, this->rc, key);
+    }
+    return this;
+}

@@ -133,3 +133,33 @@ bool Compare_tuples (Tuple t1, Tuple t2){
     }
     return true;
 }
+
+void Relation_delete(Tuple quest, Relation this){
+    if(quest->num != this->n_attr){
+        return;
+    }
+    for (int i=0; i < quest->num; i++){
+        if(i == this->key){
+            int hash_to = Relation_hash_fun(*quest->array[i]);
+            LinkedListIterator it = *LinkedList_iterator(this->hashT[hash_to]);
+            while(LinkedListIterator_has_next(&it)){
+                Tuple temp = LinkedListIterator_next(&it);
+                if(Compare_tuples(temp, quest)){
+                    LinkedList_remove(this->hashT[hash_to], temp);
+                }
+            }
+            if (!LinkedListIterator_has_next(&it)){
+                return;
+            }
+        }else {
+            Tuple temp = BST_find(quest->array[i], this->secTrees[i]);
+            if(temp == NULL){
+                return;
+            } else {
+                if(Compare_tuples(temp, quest)){
+                    BST_delete(temp, this->secTrees[i], quest->array[i]);
+                }
+            }
+        }
+    }
+}

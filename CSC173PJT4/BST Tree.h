@@ -30,3 +30,9 @@ void* BST_find(char* key, Tree this);
 void* BST_find_help(char* key, Node this);
 
 void BST_set_root(Tree this, void* data, char* key);
+
+void BST_delete(void*data, Tree this, char* key);
+
+Node BST_delete_help(void* data, Node this, char* key);
+
+char* BSTminValue(Node node);
