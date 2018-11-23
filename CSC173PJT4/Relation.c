@@ -183,7 +183,7 @@ void Relation_delete(Tuple quest, Relation this){
                         LinkedList_remove(this->hashT[hash_to], temp);
                     }
                 }
-            }else {
+            } else {
                 ArrayList temp_ls = BST_find(quest->array[i], this->secTrees[i]);
                 for(int j=0; j<temp_ls->cur; j++){
                     if(temp_ls->array[j] == NULL){
