@@ -18,7 +18,7 @@ struct Tree {
 
 struct Node {
     void* data;
-    char* attr_el;
+    char* key;
     Node lc;
     Node rc;
     Node p;
@@ -27,7 +27,7 @@ struct Node {
 Node new_Node(void* data, char* key){
     Node this = (Node)malloc(sizeof(struct Node));
     this->data = data;
-    this->attr_el = key;
+    this->key = key;
     this->lc = NULL;
     this->rc = NULL;
     this->p=NULL;
@@ -51,12 +51,12 @@ void BST_add_child(void* data, Tree this, char* key){
 }
 
 void BST_insert_help(Node this, Node new){
-    if(new->attr_el > this->attr_el){
+    if(new->key > this->key){
         if(this->rc == NULL)
         {this->rc = new; new->p=this;}
         else
             BST_insert_help(this->rc, new);
-    }if(new->attr_el <= this->attr_el){
+    }if(new->key <= this->key){
         if(this->lc == NULL)
         {this->lc = new;new->p=this;}
         else
@@ -66,29 +66,38 @@ void BST_insert_help(Node this, Node new){
     }
 }
 
-void* BST_find(char* key, Tree this){
-    return BST_find_help(key, this->root);
+ArrayList BST_find(char* key, Tree this){
+    ArrayList found = new_ArrayList();
+    BST_find_help(key, this->root, found);
+    return found;
 }
 
-void* BST_find_help(char* key, Node this){
-    if(key > this->attr_el)
-        return BST_find_help(key, this->rc);
-    if(key < this->attr_el)
-        return BST_find_help(key, this->lc);
-    else if(this->attr_el == key)
-        return this->data;
-    return NULL;
+void BST_find_help(char* key, Node this, ArrayList found){
+    if(key > this->key)
+        BST_find_help(key, this->rc, found);
+    if(key < this->key){
+        BST_find_help(key, this->lc, found);
+    }
+    else if(this->key == key){
+        ArrayList_add(this->data, found);
+        if(this->lc == NULL){
+            return;
+        }
+        else{
+            BST_find_help(key, this->lc, found);
+        }
+    }
 }
 
-void BST_delete(void*data, Tree this, char* key){
+void BST_delete(void* data, Tree this, char* key){
     BST_delete_help(data, this->root, key);
 }
 
 char* BSTminValue(Node node){
-    char* min = node->attr_el;
+    char* min = node->key;
     while (node->lc != NULL)
     {
-        min = node->lc->attr_el;
+        min = node->lc->key;
         node=node->lc;
     }
     return min;
@@ -96,9 +105,9 @@ char* BSTminValue(Node node){
 
 Node BST_delete_help(void* data, Node this, char* key){
     if(this==NULL) return this;
-    if (key < this->attr_el)
+    if (key < this->key)
         this->lc = BST_delete_help(data, this->lc, key);
-    else if (key > this->attr_el)
+    else if (key > this->key)
         this->rc = BST_delete_help(data, this->rc, key);
     else
     {
@@ -106,7 +115,7 @@ Node BST_delete_help(void* data, Node this, char* key){
             return this->rc;
         else if (this->rc==NULL)
             return this->lc;
-        this->attr_el = BSTminValue(this->rc);
+        this->key = BSTminValue(this->rc);
         this->rc=BST_delete_help(data, this->rc, key);
     }
     return this;

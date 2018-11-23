@@ -10,7 +10,7 @@
 #define BST_Tree_h
 
 #include <stdio.h>
-
+#include "ArrayList.h"
 #endif /* BST_Tree_h */
 
 typedef struct Tree* Tree;
@@ -25,13 +25,13 @@ void BST_add_child(void* data, Tree this, char* key);
 
 void BST_insert_help(Node this, Node new);
 
-void* BST_find(char* key, Tree this);
+ArrayList BST_find(char* key, Tree this);
 
-void* BST_find_help(char* key, Node this);
+void BST_find_help(char* key, Node this, ArrayList found);
 
 void BST_set_root(Tree this, void* data, char* key);
 
-void BST_delete(void*data, Tree this, char* key);
+void BST_delete(void* data, Tree this, char* key);
 
 Node BST_delete_help(void* data, Node this, char* key);
 

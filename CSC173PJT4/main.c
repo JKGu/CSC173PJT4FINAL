@@ -33,18 +33,18 @@ int main(int argc, const char * argv[]) {
     Tuple_add_el("B+", t4);
     
     
-//    int keynum = 1;
-//    Tree sec = new_Tree(keynum, "Student");
-//    BST_add_child(t4, sec, t4->array[keynum]);
-//    BST_add_child(t, sec, t->array[keynum]);
-//    BST_add_child(t2, sec, t2->array[keynum]);
-//    BST_add_child(t3, sec, t3->array[keynum]);
-//
-//    Tuple fsy = BST_find("QYR", sec);
-//    print_Tupple(fsy);
-//    Tuple zyx = BST_find("ZYX", sec);
-//    print_Tupple(zyx);
-//
+    int keynum = 0;
+    Tree sec = new_Tree(keynum, "Course");
+    BST_add_child(t4, sec, t4->array[keynum]);
+    BST_add_child(t, sec, t->array[keynum]);
+    BST_add_child(t2, sec, t2->array[keynum]);
+    BST_add_child(t3, sec, t3->array[keynum]);
+
+    ArrayList st1 = BST_find("CS101", sec);
+    for(int i=0; i<st1->cur ;i++){
+        print_Tupple(st1->array[i]);
+    }
+
 //    ArrayList test = new_ArrayList();
 //    ArrayList_add(t, test);
 //    ArrayList_add(t2, test);
@@ -55,6 +55,11 @@ int main(int argc, const char * argv[]) {
 //    printf("%d\n", n);
 //
 //
+    Tuple t_search = new_Tuple();
+    Tuple_add_el("CS101", t_search);
+    Tuple_add_el("*", t_search);
+    Tuple_add_el("*", t_search);
+    
     Relation CSG = new_Relation();
     Tuple CSG_schema = new_Tuple();
     Tuple_add_el("Course", CSG_schema);
@@ -68,10 +73,13 @@ int main(int argc, const char * argv[]) {
     
     
     print_Relation(CSG);
-    print_Relation(Relation_lookup(t, CSG));
+    printf("\n");
+    print_Relation(Relation_lookup(t_search, CSG));
     
-Relation_delete(t, CSG);
+    Relation_delete(t_search, CSG);
+    printf("\n");
     print_Relation(CSG);
     //LinkedList *found = Relation_lookup(t4, CSG);
     return 0;
 }
+

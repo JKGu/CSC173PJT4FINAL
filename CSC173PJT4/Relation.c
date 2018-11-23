@@ -93,45 +93,54 @@ Relation Relation_lookup(Tuple quest, Relation this){
         printf("Invalid Quest");
         return NULL;
     }
-    
-    
-    
-    
     for (int i=0; i < quest->num; i++){
-        if(i == this->key){
-            //如果带*号 是不能hash的！ 必须在这里判断一下！
-            int hash_to = Relation_hash_fun(*quest->array[i]);
-            LinkedListIterator it = *LinkedList_iterator(this->hashT[hash_to]);
-            while(LinkedListIterator_has_next(&it)){
-                Tuple temp = LinkedListIterator_next(&it);
-                if(Compare_tuples(temp, quest)){
-                    if(!LinkedList_contains(valid_tuples, temp))
-                        LinkedList_add_at_end(valid_tuples, temp);
+        if(*quest->array[i] == '*') {
+            continue;
+        }else{
+            if(i == this->key){
+                //算hash number
+                int hash_to = Relation_hash_fun(*quest->array[i]);
+                //一个个看hash busket里的tuple如果match且valid tuples里没有
+                //就加进去
+                LinkedListIterator it = *LinkedList_iterator(this->hashT[hash_to]);
+                while(LinkedListIterator_has_next(&it)){
+                    Tuple temp = LinkedListIterator_next(&it);
+                    if(Compare_tuples(temp, quest)){
+                        if(!LinkedList_contains(valid_tuples, temp)){
+                            LinkedList_add_at_end(valid_tuples, temp);
+                        }
+                    }
                 }
-            }
-            if (!LinkedListIterator_has_next(&it)){
-                printf("1Item not found\n");
-                return NULL;
-            }
-        }else {
-            Tuple temp = BST_find(quest->array[i], this->secTrees[i]);
-            if(temp == NULL){
-                printf("2Item not found\n");
-                return NULL;
-            } else {
-                if(Compare_tuples(temp, quest)){
-                    if(!LinkedList_contains(valid_tuples, temp))
-                        LinkedList_add_at_end(valid_tuples, temp);
+//                if (!LinkedListIterator_has_next(&it)){
+//                    printf("1Item not found\n");
+//                    return NULL;
+//                }
+            }else {
+                //不是primary key必须看secondary tree
+                Tuple temp = BST_find(quest->array[i], this->secTrees[i]);
+                if(temp == NULL){
+                    printf("2Item not found\n");
+                    return NULL;
+                } else {
+                    if(Compare_tuples(temp, quest)){
+                        if(!LinkedList_contains(valid_tuples, temp))
+                            LinkedList_add_at_end(valid_tuples, temp);
+                    }
                 }
             }
         }
     }
-    Relation output=new_Relation();
+    if(LinkedList_is_empty(valid_tuples)){
+        printf("3Item not found\n");
+        return  NULL;
+    }
+    Relation output= new_Relation();
     Relation_set_KeySchema(this->key, this->schema, output);
     LinkedListIterator it = *LinkedList_iterator(valid_tuples);
     while(LinkedListIterator_has_next(&it)){
         Tuple temp = LinkedListIterator_next(&it);
-        Relation_insert(temp, output);
+        if(temp->array[this->key]==quest->array[this->key] || *quest->array[this->key] == '*')
+            Relation_insert(temp, output);
     }
     return output;
 }
@@ -140,7 +149,7 @@ Relation Relation_lookup(Tuple quest, Relation this){
 
 bool Compare_tuples (Tuple t1, Tuple t2){
     for (int i=0; i<t1->num; i++){
-        if(*t1->array[i] != *t2->array[i] && *t1->array[i] != '*')
+        if(*t1->array[i] != *t2->array[i] && *t2->array[i] != '*')
             return false;
     }
     return true;
@@ -148,28 +157,37 @@ bool Compare_tuples (Tuple t1, Tuple t2){
 
 void Relation_delete(Tuple quest, Relation this){
     if(quest->num != this->n_attr){
+        printf("1Item not found\n");
         return;
     }
+    //Remove reference from all_Tuples
+    for(int i=0; i<this->all_Tuples->cur; i++){
+        if(Compare_tuples(this->all_Tuples->array[i], quest))
+            ArrayList_delete_at(i, this->all_Tuples);
+    }
+    
     for (int i=0; i < quest->num; i++){
-        if(i == this->key){
-            int hash_to = Relation_hash_fun(*quest->array[i]);
-            LinkedListIterator it = *LinkedList_iterator(this->hashT[hash_to]);
-            while(LinkedListIterator_has_next(&it)){
-                Tuple temp = LinkedListIterator_next(&it);
-                if(Compare_tuples(temp, quest)){
-                    LinkedList_remove(this->hashT[hash_to], temp);
+        if(*quest->array[i] == '*') {
+            continue;
+        }else{
+            if(i == this->key){
+                int hash_to = Relation_hash_fun(*quest->array[i]);
+                LinkedListIterator it = *LinkedList_iterator(this->hashT[hash_to]);
+                while(LinkedListIterator_has_next(&it)){
+                    Tuple temp = LinkedListIterator_next(&it);
+                    if(Compare_tuples(temp, quest)){
+                        LinkedList_remove(this->hashT[hash_to], temp);
+                    }
                 }
-            }
-            if (!LinkedListIterator_has_next(&it)){
-                return;
-            }
-        }else {
-            Tuple temp = BST_find(quest->array[i], this->secTrees[i]);
-            if(temp == NULL){
-                return;
-            } else {
-                if(Compare_tuples(temp, quest)){
-                    BST_delete(temp, this->secTrees[i], quest->array[i]);
+            }else {
+                Tuple temp = BST_find(quest->array[i], this->secTrees[i]);
+                if(temp == NULL){
+                    printf("2Item not found\n");
+                    return;
+                } else {
+                    if(Compare_tuples(temp, quest)){
+                        BST_delete(temp, this->secTrees[i], quest->array[i]);
+                    }
                 }
             }
         }
@@ -182,3 +200,4 @@ void print_Relation(Relation R){
         print_Tupple(R->all_Tuples->array[i]);
     }
 }
+

@@ -9,7 +9,6 @@
 #ifndef Relation_h
 #define Relation_h
 
-#include "ArrayList.h"
 #include "BST Tree.h"
 #include "Tuple.h"
 #include "LinkedList.h"
