@@ -117,14 +117,16 @@ Relation Relation_lookup(Tuple quest, Relation this){
 //                }
             }else {
                 //不是primary key必须看secondary tree
-                Tuple temp = BST_find(quest->array[i], this->secTrees[i]);
-                if(temp == NULL){
-                    printf("2Item not found\n");
-                    return NULL;
-                } else {
-                    if(Compare_tuples(temp, quest)){
-                        if(!LinkedList_contains(valid_tuples, temp))
-                            LinkedList_add_at_end(valid_tuples, temp);
+                ArrayList temp_ls = BST_find(quest->array[i], this->secTrees[i]);
+                for(int j=0; j<temp_ls->cur; j++){
+                    if(temp_ls->array[j] == NULL){
+                        printf("2Item not found\n");
+                        return NULL;
+                    } else {
+                        if(Compare_tuples(temp_ls->array[j], quest)){
+                            if(!LinkedList_contains(valid_tuples, temp_ls->array[j]))
+                                LinkedList_add_at_end(valid_tuples, temp_ls->array[j]);
+                        }
                     }
                 }
             }
@@ -162,8 +164,10 @@ void Relation_delete(Tuple quest, Relation this){
     }
     //Remove reference from all_Tuples
     for(int i=0; i<this->all_Tuples->cur; i++){
-        if(Compare_tuples(this->all_Tuples->array[i], quest))
+        if(Compare_tuples(this->all_Tuples->array[i], quest)){
             ArrayList_delete_at(i, this->all_Tuples);
+            i--;
+        }
     }
     
     for (int i=0; i < quest->num; i++){
@@ -180,13 +184,15 @@ void Relation_delete(Tuple quest, Relation this){
                     }
                 }
             }else {
-                Tuple temp = BST_find(quest->array[i], this->secTrees[i]);
-                if(temp == NULL){
-                    printf("2Item not found\n");
-                    return;
-                } else {
-                    if(Compare_tuples(temp, quest)){
-                        BST_delete(temp, this->secTrees[i], quest->array[i]);
+                ArrayList temp_ls = BST_find(quest->array[i], this->secTrees[i]);
+                for(int j=0; j<temp_ls->cur; j++){
+                    if(temp_ls->array[j] == NULL){
+                        printf("2Item not found\n");
+                        return;
+                    } else {
+                        if(Compare_tuples(temp_ls->array[j], quest)){
+                            BST_delete(temp_ls->array[j], this->secTrees[i], quest->array[i]);
+                         }
                     }
                 }
             }
