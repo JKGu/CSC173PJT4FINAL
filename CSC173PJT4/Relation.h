@@ -14,8 +14,19 @@
 #include "LinkedList.h"
 
 #include <stdio.h>
-
+#include <string.h>
 #endif /* Relation_h */
+
+struct Relation {
+    Tuple schema;
+    int key;
+    ArrayList all_Tuples; //A general list to keep all tuples so that we can iterate
+    Tree secTrees[10];
+    LinkedList *hashT[20];
+    int n_attr;
+    int n_el;
+};
+
 
 typedef struct Relation* Relation;
 
@@ -36,3 +47,9 @@ bool Compare_tuples (Tuple t1, Tuple t2);
 void Relation_delete(Tuple quest, Relation this);
 
 void print_Relation(Relation R);
+
+Relation Relation_join (char* join_on1, char* join_on2, Relation R1, Relation R2);
+
+Relation Relation_projection(Tuple tuple, Relation relation);
+
+Relation Relation_selection(Relation relation, char* attribute, char* element);

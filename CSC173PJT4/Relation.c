@@ -11,16 +11,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Relation {
-    Tuple schema;
-    int key;
-    ArrayList all_Tuples; //A general list to keep all tuples so that we can iterate
-    Tree secTrees[10];
-    LinkedList *hashT[20];
-    int n_attr;
-    int n_el;
-};
-
 Relation new_Relation(){
     Relation this = (Relation)malloc(sizeof(struct Relation));
     this->schema = new_Tuple();
@@ -50,7 +40,6 @@ void Relation_set_KeySchema(int keynum, Tuple schema, Relation this){
     }
 }
 
-
 void Relation_insert(Tuple el, Relation this){
     
     //All_Tuples
@@ -67,6 +56,7 @@ void Relation_insert(Tuple el, Relation this){
             BST_add_child(el, this->secTrees[i], el->array[i]);
         }
     }
+    this->n_el++;
 }
 
 int Relation_hash_fun(int index){
@@ -74,10 +64,9 @@ int Relation_hash_fun(int index){
 }
 
 void Relation_append_attr(char* new_schema, ArrayList new_els,  Relation this){
-    
     //Update the schema
     Tuple_add_el(new_schema, this->schema);
-    
+    this->n_attr++;
     //Iterate through all tuples to add new element
     for (int i=0; i<new_els->cur; i++){
         while(i<this->all_Tuples->cur){
@@ -111,10 +100,6 @@ Relation Relation_lookup(Tuple quest, Relation this){
                         }
                     }
                 }
-//                if (!LinkedListIterator_has_next(&it)){
-//                    printf("1Item not found\n");
-//                    return NULL;
-//                }
             }else {
                 //不是primary key必须看secondary tree
                 ArrayList temp_ls = BST_find(quest->array[i], this->secTrees[i]);
@@ -167,9 +152,9 @@ void Relation_delete(Tuple quest, Relation this){
         if(Compare_tuples(this->all_Tuples->array[i], quest)){
             ArrayList_delete_at(i, this->all_Tuples);
             i--;
+            this->n_el--;
         }
     }
-    
     for (int i=0; i < quest->num; i++){
         if(*quest->array[i] == '*') {
             continue;
@@ -207,3 +192,92 @@ void print_Relation(Relation R){
     }
 }
 
+Relation Relation_join (char* join_on1, char* join_on2, Relation R1, Relation R2) {
+    Relation new_R = new_Relation();
+    Tuple new_schema = new_Tuple();
+    int arr1 = -1;
+    int arr2 = -1;
+    
+    for(int i=0; i<R1->n_attr; i++){
+        if(R1->schema->array[i] == join_on1)
+            arr1 = i;
+        else Tuple_add_el(R1->schema->array[i], new_schema);
+    }
+    for(int j=0; j<R2->n_attr; j++){
+        Tuple_add_el(R2->schema->array[j], new_schema);
+        if(R2->schema->array[j] == join_on2)
+            arr2 = j;
+    }
+    new_R->schema = new_schema;
+    
+    for(int i=0; i<R1->n_el; i++){
+        Tuple temp = R1->all_Tuples->array[i];
+        char* match = temp->array[arr1];
+        for(int j=0; j<R2->n_el; j++){
+            Tuple temp2 = R2->all_Tuples->array[j];
+            if(temp2->array[arr2] == match){
+                Tuple new_T = new_Tuple();
+                for(int m=0; m<R1->n_attr; m++){
+                    if(m == arr1)
+                        continue;
+                    else Tuple_add_el(temp->array[m], new_T);
+                }
+                for(int n=0; n<R2->n_attr; n++){
+                    Tuple_add_el(temp2->array[n], new_T);
+                }
+                ArrayList_add(new_T, new_R->all_Tuples);
+                new_R->n_el++;
+            }
+        }
+    }
+    return new_R;
+}
+
+Relation Relation_projection(Tuple tuple, Relation relation){
+    Relation output = new_Relation();
+    output->schema = tuple;
+    int relationAtrriCount = relation->schema->num;
+    int projectedAtrriCount = tuple->num;
+    int projectedTupleCount = relation->all_Tuples->cur;
+    for(int i=0;i<projectedTupleCount;i++){
+        Tuple temp=new_Tuple();
+        for(int x=0;x<projectedAtrriCount;x++){
+            Tuple_add_el(NULL, temp);
+        }
+        ArrayList_add(temp, output->all_Tuples);
+    }
+    for(int j=0; j<projectedAtrriCount;j++){//iterate through new attri
+        int targetIndex=-1;
+        for(int k=0; k<relationAtrriCount;k++){//find cores. column in old relation
+            if(tuple->array[j]==relation->schema->array[k]){
+                targetIndex=k;
+            }
+        }
+        for(int l=0;l<projectedTupleCount;l++){//fill one col of the new relation
+            Tuple this=output->all_Tuples->array[l];
+            Tuple this2=relation->all_Tuples->array[l];
+            this->array[j]=this2->array[targetIndex];
+        }
+    }
+    return output;
+}
+
+Relation Relation_selection(Relation relation, char* attribute, char* element){
+    Relation relationStore = new_Relation();
+    Relation_set_KeySchema(relation ->key, relation ->schema, relationStore);
+    int checkColPosition = 0;
+    
+    for (int i = 0; i< relation ->schema -> num; i++){
+        if ( strcmp(attribute, relation -> schema ->array[i]) == 0 ){
+            checkColPosition = i;
+        }
+    }
+    for (int i = 0; i < relation -> all_Tuples -> cur; i++){
+        Tuple eachTuple = new_Tuple();
+        eachTuple = relation ->all_Tuples ->array[i];
+        if ( strcmp(element, eachTuple -> array[checkColPosition] ) == 0 ){
+            Relation_insert(eachTuple, relationStore);
+        }
+    }
+    return relationStore;
+}
