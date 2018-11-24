@@ -310,9 +310,6 @@ Relation Where_is_who_at_when (char* Name, char* Time, char* Day,
     Relation branch_3 = Relation_projection(t2, CSG);
     Relation branch_4 = Relation_join("Student", "Student", branch_2, branch_3);
     
-    Relation branch1 = Relation_join("Student", "Student", Relation_projection(t2, CSG),
-                  Relation_projection(t, Relation_selection(SNAP, "Name", Name)));
-    
     Relation branch2 = Relation_selection(Relation_selection(CDH, "Day", Day), "Hour", Time);
     
     Relation branch3 = Relation_join("Course", "Course", branch_4,

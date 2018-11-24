@@ -21,7 +21,7 @@ struct Relation {
     char* name;
     Tuple schema;
     int key;
-    ArrayList all_Tuples; //A general list to keep all tuples so that we can iterate
+    ArrayList all_Tuples;
     Tree secTrees[10];
     LinkedList *hashT[20];
     int n_attr;

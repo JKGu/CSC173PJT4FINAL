@@ -31,4 +31,4 @@ int stringToInt(char* string);
 
 Tuple stringToTuple(char* tuple);
 
-
+char* removeNewLine(char* i);

@@ -13,6 +13,7 @@
 		059AC06921A630A2009DE692 /* ArrayList.c in Sources */ = {isa = PBXBuildFile; fileRef = 059AC06221A630A1009DE692 /* ArrayList.c */; };
 		059AC06A21A630A2009DE692 /* Relation.c in Sources */ = {isa = PBXBuildFile; fileRef = 059AC06321A630A2009DE692 /* Relation.c */; };
 		059AC06C21A643CA009DE692 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 059AC06B21A643C9009DE692 /* main.c */; };
+		D61F874E21A9CBDF00332376 /* Database.c in Sources */ = {isa = PBXBuildFile; fileRef = D61F874D21A9CBDF00332376 /* Database.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -40,6 +41,8 @@
 		059AC06321A630A2009DE692 /* Relation.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Relation.c; sourceTree = "<group>"; };
 		059AC06421A630A2009DE692 /* ArrayList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArrayList.h; sourceTree = "<group>"; };
 		059AC06B21A643C9009DE692 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		D61F874D21A9CBDF00332376 /* Database.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Database.c; sourceTree = "<group>"; };
+		D61F874F21A9CBFA00332376 /* Database.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +84,8 @@
 				059AC06B21A643C9009DE692 /* main.c */,
 				059AC06321A630A2009DE692 /* Relation.c */,
 				059AC05A21A630A0009DE692 /* Relation.h */,
+				D61F874D21A9CBDF00332376 /* Database.c */,
+				D61F874F21A9CBFA00332376 /* Database.h */,
 				059AC05D21A630A0009DE692 /* Tuple.c */,
 				059AC05E21A630A1009DE692 /* Tuple.h */,
 			);
@@ -143,6 +148,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D61F874E21A9CBDF00332376 /* Database.c in Sources */,
 				059AC06A21A630A2009DE692 /* Relation.c in Sources */,
 				059AC06721A630A2009DE692 /* LinkedList.c in Sources */,
 				059AC06621A630A2009DE692 /* Tuple.c in Sources */,
