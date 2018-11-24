@@ -18,6 +18,7 @@
 #endif /* Relation_h */
 
 struct Relation {
+    char* name;
     Tuple schema;
     int key;
     ArrayList all_Tuples; //A general list to keep all tuples so that we can iterate
@@ -53,3 +54,7 @@ Relation Relation_join (char* join_on1, char* join_on2, Relation R1, Relation R2
 Relation Relation_projection(Tuple tuple, Relation relation);
 
 Relation Relation_selection(Relation relation, char* attribute, char* element);
+
+Relation Where_is_who_at_when (char* Name, char* Tiem, char* Day, Relation CSG, Relation SNAP, Relation CDH, Relation CR);
+
+Relation what_grade_did_who_get_in_class(char* name, char* course, Relation SNAP, Relation CSG);

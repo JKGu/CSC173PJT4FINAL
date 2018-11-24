@@ -13,6 +13,7 @@
 
 Relation new_Relation(){
     Relation this = (Relation)malloc(sizeof(struct Relation));
+    this->name = NULL;
     this->schema = new_Tuple();
     this->key = -1;
     this->all_Tuples = new_ArrayList();
@@ -122,6 +123,7 @@ Relation Relation_lookup(Tuple quest, Relation this){
         return  NULL;
     }
     Relation output= new_Relation();
+    output->name = "Lookup_output";
     Relation_set_KeySchema(this->key, this->schema, output);
     LinkedListIterator it = *LinkedList_iterator(valid_tuples);
     while(LinkedListIterator_has_next(&it)){
@@ -194,6 +196,7 @@ void print_Relation(Relation R){
 
 Relation Relation_join (char* join_on1, char* join_on2, Relation R1, Relation R2) {
     Relation new_R = new_Relation();
+    new_R->name = "Join_output";
     Tuple new_schema = new_Tuple();
     int arr1 = -1;
     int arr2 = -1;
@@ -209,6 +212,7 @@ Relation Relation_join (char* join_on1, char* join_on2, Relation R1, Relation R2
             arr2 = j;
     }
     new_R->schema = new_schema;
+    new_R->n_attr = new_schema->num;
     
     for(int i=0; i<R1->n_el; i++){
         Tuple temp = R1->all_Tuples->array[i];
@@ -235,7 +239,9 @@ Relation Relation_join (char* join_on1, char* join_on2, Relation R1, Relation R2
 
 Relation Relation_projection(Tuple tuple, Relation relation){
     Relation output = new_Relation();
+    output->name = "Projection_output";
     output->schema = tuple;
+    output->n_attr = tuple->num;
     int relationAtrriCount = relation->schema->num;
     int projectedAtrriCount = tuple->num;
     int projectedTupleCount = relation->all_Tuples->cur;
@@ -245,6 +251,7 @@ Relation Relation_projection(Tuple tuple, Relation relation){
             Tuple_add_el(NULL, temp);
         }
         ArrayList_add(temp, output->all_Tuples);
+        output->n_el++;
     }
     for(int j=0; j<projectedAtrriCount;j++){//iterate through new attri
         int targetIndex=-1;
@@ -264,8 +271,10 @@ Relation Relation_projection(Tuple tuple, Relation relation){
 
 Relation Relation_selection(Relation relation, char* attribute, char* element){
     Relation relationStore = new_Relation();
+    relationStore->name = "Slection_output";
     Relation_set_KeySchema(relation ->key, relation ->schema, relationStore);
     int checkColPosition = 0;
+    relationStore->n_attr = relation->schema->num;
     
     for (int i = 0; i< relation ->schema -> num; i++){
         if ( strcmp(attribute, relation -> schema ->array[i]) == 0 ){
@@ -276,8 +285,64 @@ Relation Relation_selection(Relation relation, char* attribute, char* element){
         Tuple eachTuple = new_Tuple();
         eachTuple = relation ->all_Tuples ->array[i];
         if ( strcmp(element, eachTuple -> array[checkColPosition] ) == 0 ){
-            Relation_insert(eachTuple, relationStore);
+            ArrayList_add(eachTuple, relationStore->all_Tuples);
+            relationStore->n_el++;
         }
     }
     return relationStore;
+}
+
+Relation Where_is_who_at_when (char* Name, char* Tiem, char* Day,
+                            Relation CSG, Relation SNAP, Relation CDH, Relation CR)
+{
+    Tuple t = new_Tuple();
+    Tuple_add_el("Student", t);
+    Tuple t2 = new_Tuple();
+    Tuple_add_el("Course", t2);
+    Tuple_add_el("Student", t2);
+    Tuple t3 = new_Tuple();
+    Tuple_add_el("Course", t3);
+    Tuple t4 = new_Tuple();
+    Tuple_add_el("Room", t4);
+
+    Relation branch_1 = Relation_selection(SNAP, "Name", "C.Brown");
+    Relation branch_2 = Relation_projection(t, branch_1);
+    Relation branch_3 = Relation_projection(t2, CSG);
+    Relation branch_4 = Relation_join("Student", "Student", branch_2, branch_3);
+    
+    Relation branch1 = Relation_join("Student", "Student", Relation_projection(t2, CSG),
+                  Relation_projection(t, Relation_selection(SNAP, "Name", "C.Brown")));
+    
+    Relation branch2 = Relation_selection(Relation_selection(CDH, "Day", "M"), "Hour", "9AM");
+    
+    Relation branch3 = Relation_join("Course", "Course", branch_4,
+                                     Relation_projection(t3, branch2));
+    Relation branch4 = Relation_projection(t4, Relation_join("Course", "Course", branch3, CR));
+    
+    return branch4;
+}
+
+Relation what_grade_did_who_get_in_class(char* name, char* course, Relation SNAP, Relation CSG){
+    
+    // join SNAP and CSG
+    Relation joinRelation = Relation_join("Student", "Student", SNAP, CSG);
+    // Relation_set_KeySchema(joinRelation ->key, joinRelation -> schema, joinRelation);
+
+    //-------------------------------------------------------------------------
+    
+    // select student (select name)
+    Relation selectID = Relation_selection(joinRelation, "Name", "C.Brown");
+
+    //-------------------------------------------------------------------------
+    
+    // select course
+    Relation selectedCourse = Relation_selection(selectID, "Course", "CS101");
+    
+    //project grade
+    Tuple t1 =  new_Tuple();
+    Tuple_add_el("Grade", t1);
+    Relation projectGrade = Relation_projection(t1, selectedCourse);
+    
+    return projectGrade;
+
 }

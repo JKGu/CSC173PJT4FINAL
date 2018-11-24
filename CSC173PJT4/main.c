@@ -15,12 +15,12 @@ int main(int argc, const char * argv[]) {
     Tuple t = new_Tuple();
     Tuple_add_el("CS101", t);
     Tuple_add_el("12345", t);
-    Tuple_add_el("A", t);
+    Tuple_add_el("C", t);
 
     Tuple t2 = new_Tuple();
     Tuple_add_el("CS101", t2);
     Tuple_add_el("67890", t2);
-    Tuple_add_el("B", t2);
+    Tuple_add_el("A", t2);
 
     Tuple t3 = new_Tuple();
     Tuple_add_el("EE200", t3);
@@ -45,16 +45,6 @@ int main(int argc, const char * argv[]) {
         print_Tupple(st1->array[i]);
     }
 
-//    ArrayList test = new_ArrayList();
-//    ArrayList_add(t, test);
-//    ArrayList_add(t2, test);
-//    ArrayList_add(t3, test);
-//
-//    char* strings[] = {"Hello", "World","VeryLondWord","s"};
-//    int n = sizeof(strings)/sizeof(strings[0]);
-//    printf("%d\n", n);
-//
-//
     Tuple t_search = new_Tuple();
     Tuple_add_el("CS101", t_search);
     Tuple_add_el("*", t_search);
@@ -77,10 +67,10 @@ int main(int argc, const char * argv[]) {
     printf("Search on CSC101\n");
     print_Relation(Relation_lookup(t_search, CSG));
     
-    Relation_delete(t_search, CSG);
-    printf("\n");
-    printf("Delete CSC101\n");
-    print_Relation(CSG);
+//    Relation_delete(t_search, CSG);
+//    printf("\n");
+//    printf("Delete CSC101\n");
+//    print_Relation(CSG);
     //printf("\n%d\t%d\n", CSG->n_attr, CSG->n_el);
     //LinkedList *found = Relation_lookup(t4, CSG);
     
@@ -127,6 +117,50 @@ int main(int argc, const char * argv[]) {
     
     printf("Selection on Student\n");
     print_Relation(Relation_selection(CSG, "Course", "EE200"));
+    print_Relation(Relation_selection(SNAP, "Name", "C.Brown"));
+    
+    Tuple t8 = new_Tuple();
+    Tuple_add_el("CS101", t8);
+    Tuple_add_el("M", t8);
+    Tuple_add_el("9AM", t8);
+    
+    
+    Tuple t9 = new_Tuple();
+    Tuple_add_el("EE200", t9);
+    Tuple_add_el("Dewey302", t9);
+
+    
+    Relation CDH = new_Relation();
+    Tuple CDH_schema = new_Tuple();
+    Tuple_add_el("Course", CDH_schema);
+    Tuple_add_el("Day", CDH_schema);
+    Tuple_add_el("Hour", CDH_schema);
+    
+    Relation_set_KeySchema(1,CDH_schema, CDH);
+    Relation_insert(t8, CDH);
+    Relation_insert(t9, CDH);
+    
+    
+    Tuple t10 = new_Tuple();
+    Tuple_add_el("CS101", t10);
+    Tuple_add_el("Wegmens1400", t10);
+    
+    Tuple t11 = new_Tuple();
+    Tuple_add_el("EE110", t11);
+    Tuple_add_el("Dewey210", t11);
+
+    Relation CR = new_Relation();
+    Tuple CR_schema = new_Tuple();
+    Tuple_add_el("Course", CR_schema);
+    Tuple_add_el("Room", CR_schema);
+    
+    Relation_set_KeySchema(1,CR_schema, CR);
+    Relation_insert(t10, CR);
+    Relation_insert(t11, CR);
+    
+    print_Relation(Where_is_who_at_when("C.Brown", "9AM", "M", CSG, SNAP, CDH, CR));
+    print_Relation(what_grade_did_who_get_in_class("C.Brown", "CS101", SNAP, CSG));
+
     return 0;
     
 }
