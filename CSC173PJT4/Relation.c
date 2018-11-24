@@ -292,7 +292,7 @@ Relation Relation_selection(Relation relation, char* attribute, char* element){
     return relationStore;
 }
 
-Relation Where_is_who_at_when (char* Name, char* Tiem, char* Day,
+Relation Where_is_who_at_when (char* Name, char* Time, char* Day,
                             Relation CSG, Relation SNAP, Relation CDH, Relation CR)
 {
     Tuple t = new_Tuple();
@@ -305,15 +305,15 @@ Relation Where_is_who_at_when (char* Name, char* Tiem, char* Day,
     Tuple t4 = new_Tuple();
     Tuple_add_el("Room", t4);
 
-    Relation branch_1 = Relation_selection(SNAP, "Name", "C.Brown");
+    Relation branch_1 = Relation_selection(SNAP, "Name", Name);
     Relation branch_2 = Relation_projection(t, branch_1);
     Relation branch_3 = Relation_projection(t2, CSG);
     Relation branch_4 = Relation_join("Student", "Student", branch_2, branch_3);
     
     Relation branch1 = Relation_join("Student", "Student", Relation_projection(t2, CSG),
-                  Relation_projection(t, Relation_selection(SNAP, "Name", "C.Brown")));
+                  Relation_projection(t, Relation_selection(SNAP, "Name", Name)));
     
-    Relation branch2 = Relation_selection(Relation_selection(CDH, "Day", "M"), "Hour", "9AM");
+    Relation branch2 = Relation_selection(Relation_selection(CDH, "Day", Day), "Hour", Time);
     
     Relation branch3 = Relation_join("Course", "Course", branch_4,
                                      Relation_projection(t3, branch2));
@@ -331,12 +331,12 @@ Relation what_grade_did_who_get_in_class(char* name, char* course, Relation SNAP
     //-------------------------------------------------------------------------
     
     // select student (select name)
-    Relation selectID = Relation_selection(joinRelation, "Name", "C.Brown");
+    Relation selectID = Relation_selection(joinRelation, "Name", name);
 
     //-------------------------------------------------------------------------
     
     // select course
-    Relation selectedCourse = Relation_selection(selectID, "Course", "CS101");
+    Relation selectedCourse = Relation_selection(selectID, "Course", course);
     
     //project grade
     Tuple t1 =  new_Tuple();
