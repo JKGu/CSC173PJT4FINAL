@@ -43,8 +43,16 @@ char* removeNewLine(char* i){
     if(i[length-1]=='\n'){
         i[length-1]='\0';
     }
-    printf("PRINT:%s\n",i);
     return i;
+}
+
+char* readLine(FILE * file){
+    char line [256];
+    char* output=removeNewLine(fgets(line, sizeof(line), file));
+    char * copy = malloc(strlen(output) + 1);
+    strcpy(copy, output);
+    if(copy==NULL) return readLine(file);
+    return copy;
 }
 
 Database readFile(char* filename){
@@ -55,35 +63,51 @@ Database readFile(char* filename){
         printf("File not found\n");
     }else{
         char line[256];
-        fgets(line, sizeof(line), file);//ignore first line
-        char* tmp=removeNewLine(fgets(line, sizeof(line), file));
-        int numRelation=stringToInt(tmp);//NUMBER OF RELATIONS
-        
+        //IGNORE TITLE
+        char* firstline=readLine(file);
+        //NUMBER OF RELATIONS
+        char* tmp=readLine(file);
+        int numRelation=stringToInt(tmp);
         
         for( int i=0; i<numRelation;i++){//create a relation
             Relation tmp=new_Relation();
-            fgets(line, sizeof(line), file);//ignore
-            tmp->name=removeNewLine(fgets(line, sizeof(line), file));
-            fgets(line, sizeof(line), file);//ignore
-            tmp->key=stringToInt(removeNewLine(fgets(line, sizeof(line), file)));
-            fgets(line, sizeof(line), file);//ignore
-            int numofTuple=stringToInt(removeNewLine(fgets(line, sizeof(line), file)));
-            char* schema=removeNewLine(fgets(line, sizeof(line), file));
+            //IGNORE SPACE
+            readLine(file);
+            //NAME
+            tmp->name=readLine(file);
+            //IGNORE KEY TITLE
+            readLine(file);
+            //KEY INDEX
+            tmp->key=stringToInt(readLine(file));
+            //IGNORE TITLE
+            readLine(file);
+            //NUM OF TUTPLES
+            int numofTuple=stringToInt(readLine(file));
+            //READ SCHEMA
+            char* schema=readLine(file);
             tmp->schema=stringToTuple(schema);
+            //INSERT TUPLES
             for( int j=0; j<numofTuple; j++){//create a tuple
-                char* tuple=removeNewLine(fgets(line, sizeof(line), file));
+                char* tuple=readLine(file);
                 Relation_insert(stringToTuple(tuple), tmp);
             }
             ArrayList_add(tmp, db->relationList);
         }
     }
+    fclose(file);
     return db;
     
 }
 
-void saveFile(Database database){
+void saveFile(Database database, char* filename){
     FILE * file=NULL;
-    file=fopen("Database.txt", "w+");
+    file=fopen(filename, "r");
+    if(file==NULL){
+        file=fopen(filename, "w+");
+    }else{
+        remove(filename);
+        file=fopen(filename, "w+");
+    }
     int numRelations=database->relationList->cur;
     fprintf(file,"Num of Relations\n%d\n",numRelations);//Number of relations
     for(int i=0; i<numRelations;i++){//write a relation

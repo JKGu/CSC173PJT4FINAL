@@ -7,160 +7,119 @@
 //
 
 #include <stdio.h>
-#include "Relation.h"
-
+#include "Database.h"
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    Tuple t = new_Tuple();
-    Tuple_add_el("CS101", t);
-    Tuple_add_el("12345", t);
-    Tuple_add_el("C", t);
-
-    Tuple t2 = new_Tuple();
-    Tuple_add_el("CS101", t2);
-    Tuple_add_el("67890", t2);
-    Tuple_add_el("A", t2);
-
-    Tuple t3 = new_Tuple();
-    Tuple_add_el("EE200", t3);
-    Tuple_add_el("12345", t3);
-    Tuple_add_el("C", t3);
-
-    Tuple t4 = new_Tuple();
-    Tuple_add_el("EE200", t4);
-    Tuple_add_el("22222", t4);
-    Tuple_add_el("B+", t4);
+    
+    Database db=readFile("Database.txt");
+    
+    printf("    Insert Tuple...\n");
+    
+    printf("    Relation [StudentID - Name - Address - Phone]\nBefore\n");
+    
+    // **** Check and Change the Index of the Relation in the Database ****
+    print_Relation(db ->relationList ->array[1]);
+    
+    printf("    Inserting Tuple [67890 / T.Pawliki / Faculty Rd / 585-956-234]\n");
+    Tuple tInsert1 = new_Tuple();
+    Tuple_add_el("67890", tInsert1);
+    Tuple_add_el("T.Pawliki", tInsert1);
+    Tuple_add_el("Faculty Rd", tInsert1);
+    Tuple_add_el("585-956-234", tInsert1);
+    
+    Relation toInsert = db ->relationList ->array[1];
+    Relation_insert(tInsert1, toInsert);
+    print_Relation(toInsert);
     
     
-    int keynum = 0;
-    Tree sec = new_Tree(keynum, "Course");
-    BST_add_child(t4, sec, t4->array[keynum]);
-    BST_add_child(t, sec, t->array[keynum]);
-    BST_add_child(t2, sec, t2->array[keynum]);
-    BST_add_child(t3, sec, t3->array[keynum]);
-
-    ArrayList st1 = BST_find("CS101", sec);
-    for(int i=0; i<st1->cur ;i++){
-        print_Tupple(st1->array[i]);
-    }
-
-    Tuple t_search = new_Tuple();
-    Tuple_add_el("CS101", t_search);
-    Tuple_add_el("*", t_search);
-    Tuple_add_el("*", t_search);
     
-    Relation CSG = new_Relation();
-    Tuple CSG_schema = new_Tuple();
-    Tuple_add_el("Course", CSG_schema);
-    Tuple_add_el("Student", CSG_schema);
-    Tuple_add_el("Grade", CSG_schema);
-    Relation_set_KeySchema(1,CSG_schema, CSG);
-    Relation_insert(t, CSG);
-    Relation_insert(t2, CSG);
-    Relation_insert(t3, CSG);
-    Relation_insert(t4, CSG);
+    printf("    Lookup Tuple...\n");
+    printf("    Look Up Tuple [67890 / T.Pawliki / Faculty Rd / 585-956-234]\n");
+    Relation toLookUp = Relation_lookup(tInsert1, toInsert);
+    print_Relation(toLookUp);
     
     
-    print_Relation(CSG);
-    printf("\n");
-    printf("Search on CSC101\n");
-    print_Relation(Relation_lookup(t_search, CSG));
-    
-//    Relation_delete(t_search, CSG);
-//    printf("\n");
-//    printf("Delete CSC101\n");
-//    print_Relation(CSG);
-    //printf("\n%d\t%d\n", CSG->n_attr, CSG->n_el);
-    //LinkedList *found = Relation_lookup(t4, CSG);
-    
-    Tuple t5 = new_Tuple();
-    Tuple_add_el("22222", t5);
-    Tuple_add_el("G.Furguson", t5);
-    Tuple_add_el("Wilson Blvd", t5);
-    Tuple_add_el("585-123-456", t5);
-
-    
-    Tuple t6 = new_Tuple();
-    Tuple_add_el("67890", t6);
-    Tuple_add_el("T.Pawliki", t6);
-    Tuple_add_el("Faculty Rd", t6);
-    Tuple_add_el("585-956-234", t6);
-
-    
-    Tuple t7 = new_Tuple();
-    Tuple_add_el("12345", t7);
-    Tuple_add_el("C.Brown", t7);
-    Tuple_add_el("Campus Drive", t7);
-    Tuple_add_el("585-000-010", t7);
-    
-    Relation SNAP = new_Relation();
-    Tuple SNAP_schema = new_Tuple();
-    Tuple_add_el("Student", SNAP_schema);
-    Tuple_add_el("Name", SNAP_schema);
-    Tuple_add_el("Address", SNAP_schema);
-    Tuple_add_el("Phone", SNAP_schema);
-
-    Relation_set_KeySchema(1,SNAP_schema, SNAP);
-    Relation_insert(t5, SNAP);
-    Relation_insert(t6, SNAP);
-    Relation_insert(t7, SNAP);
-    printf("\n");
-    printf("Join on students\n");
-    print_Relation(Relation_join("Student", "Student", CSG, SNAP));
-    printf("\n");
-    
-    Tuple test=new_Tuple();
-    Tuple_add_el("Student", test);
-    printf("Project on Student\n");
-    print_Relation(Relation_projection(test, CSG));
-    
-    printf("Selection on Student\n");
-    print_Relation(Relation_selection(CSG, "Course", "EE200"));
-    print_Relation(Relation_selection(SNAP, "Name", "C.Brown"));
-    
-    Tuple t8 = new_Tuple();
-    Tuple_add_el("CS101", t8);
-    Tuple_add_el("M", t8);
-    Tuple_add_el("9AM", t8);
+    printf("    Delete Tuple...\n");
+    printf("    Delete Tuple [67890 / T.Pawliki / Faculty Rd / 585-956-234]\n");
+    Relation_delete(tInsert1, toInsert);
+    print_Relation(toInsert);
     
     
-    Tuple t9 = new_Tuple();
-    Tuple_add_el("EE200", t9);
-    Tuple_add_el("Dewey302", t9);
-
-    
-    Relation CDH = new_Relation();
-    Tuple CDH_schema = new_Tuple();
-    Tuple_add_el("Course", CDH_schema);
-    Tuple_add_el("Day", CDH_schema);
-    Tuple_add_el("Hour", CDH_schema);
-    
-    Relation_set_KeySchema(1,CDH_schema, CDH);
-    Relation_insert(t8, CDH);
-    Relation_insert(t9, CDH);
+    printf("    Relation Selection...\n");
+    printf("    Select 'CS101' From Relation [Course - StudentID - Grade]\n");
+    Relation csgToSelect = db -> relationList -> array[0];
+    Relation csgSelected = Relation_selection(csgToSelect, "Course", "CS101");
+    print_Relation(csgSelected);
     
     
-    Tuple t10 = new_Tuple();
-    Tuple_add_el("CS101", t10);
-    Tuple_add_el("Wegmens1400", t10);
+    printf("    Relation Projection...\n");
+    printf("    Project 'StudentID' From Relation [Course - StudentID - Grade]\n");
+    Relation csgToProject = db -> relationList -> array[0];
     
-    Tuple t11 = new_Tuple();
-    Tuple_add_el("EE110", t11);
-    Tuple_add_el("Dewey210", t11);
-
-    Relation CR = new_Relation();
-    Tuple CR_schema = new_Tuple();
-    Tuple_add_el("Course", CR_schema);
-    Tuple_add_el("Room", CR_schema);
+    Tuple projectionT1 = new_Tuple();
+    Tuple_add_el("Student", projectionT1);
+    Relation csgProjected = Relation_projection(projectionT1, csgToProject);
+    print_Relation(csgProjected);
     
-    Relation_set_KeySchema(1,CR_schema, CR);
-    Relation_insert(t10, CR);
-    Relation_insert(t11, CR);
+    printf("    Relation Join...\n");
+    printf("    Join Relation [Course - StudentID - Grade] and [StudentID - Name - Address -Phone] on 'StudentID'\n");
+    Relation csgToJoin = db -> relationList -> array[0];
+    Relation snapToJoin = db -> relationList -> array[1];
+    Relation csgJoinedSnap = Relation_join("Student", "Student", csgToJoin, csgToProject);
+    print_Relation(csgJoinedSnap);
     
-    print_Relation(Where_is_who_at_when("C.Brown", "9AM", "M", CSG, SNAP, CDH, CR));
-    print_Relation(what_grade_did_who_get_in_class("C.Brown", "CS101", SNAP, CSG));
-
+    
+    printf("    Query: What Grade Did [StudentName] get in [CourseName] ?...\n");
+    
+    char studentName[256];
+    char courseName[256];
+    do{
+        printf("    -Please enter student's name (Enter 'quit' to quit query)\n");
+        
+        scanf("%s", studentName);
+        
+        printf("    -Please enter student's name (Enter 'quit' to quit query)\n");
+        
+        scanf("%s", courseName);
+        Relation csgPart3 = db -> relationList -> array[0];
+        Relation snapPart3 = db -> relationList -> array[1];
+        
+        print_Relation(what_grade_did_who_get_in_class(studentName, courseName, snapPart3, csgPart3));
+        
+    } while ( (strcmp(studentName, "quit")!=0 ) &&  (strcmp(courseName, "quit")!=0 ) );
+    
+    
+    printf("    Query: Where is [StudentName] at [Time] on [Day]?...\n");
+    
+    char studentName2[256];
+    char Time[256];
+    char Day[256];
+    
+    do{
+        printf("    -Please enter student's name (Enter 'quit' to quit query)\n");
+        
+        scanf("%s", studentName2);
+        
+        printf("    -Please enter Time (Enter 'quit' to quit query)\n");
+        
+        scanf("%s", Time);
+        
+        printf("    -Please enter Day (Enter 'quit' to quit query)\n");
+        
+        scanf("%s", Day);
+        
+        
+        Relation csgPart3 = db -> relationList -> array[0];
+        Relation snapPart3 = db -> relationList -> array[1];
+        Relation cdhPart3 = db -> relationList -> array[3];
+        Relation crPart3 = db -> relationList -> array[4];
+        
+        
+        print_Relation(Where_is_who_at_when(studentName, Time, Day, csgPart3, snapPart3, cdhPart3, crPart3));
+        
+    } while ( (strcmp(studentName2, "quit")!=0 ) &&  (strcmp(Time, "quit")!=0 )
+             &&  (strcmp(Day, "quit")!=0 ) );
+    saveFile(db,"Database.txt");
     return 0;
     
 }

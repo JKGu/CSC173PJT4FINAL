@@ -23,7 +23,7 @@ typedef struct Database* Database;
 
 Database new_Database(void);
 
-void saveFile(Database database);
+void saveFile(Database database, char* filename);
 
 Database readFile(char* filename);
 
@@ -32,3 +32,5 @@ int stringToInt(char* string);
 Tuple stringToTuple(char* tuple);
 
 char* removeNewLine(char* i);
+
+char* readLine(FILE * file);
